@@ -14,14 +14,36 @@ namespace Calculadora
     public partial class Calculadora : Form
     {
         //Variables Globales
-        double num1;
-        double num2;
-        double resultado;
-        char signo;
+        double num1 = 0;
+        double num2 = 0;
+        bool error = false;
+        char signo = 'n';
 
         public Calculadora()
         {
             InitializeComponent();
+        }
+
+        private double operacion()
+        {
+            double resultado = 0;
+            
+            switch(signo)
+            {
+                case '+': resultado = num1 + num2; break;
+                case '-': resultado = num1 - num2; break;
+                case '*': resultado = num1 * num2; break;
+                case '/': if(num2 == 0)
+                    {
+                        label1.Text = "No se puede dividir entre 0";
+                        error = true;
+                        break;
+
+                    }
+                    resultado = num1 / num2; break;
+            }
+            signo = 'n';
+            return resultado;
         }
 
         private void btn_off_Click(object sender, EventArgs e)
@@ -36,6 +58,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if(btn_delete.Enabled == false)
@@ -61,6 +85,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -86,6 +112,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -111,6 +139,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -136,6 +166,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -161,6 +193,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -186,6 +220,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -211,6 +247,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -236,6 +274,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -259,6 +299,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -267,12 +309,14 @@ namespace Calculadora
                 btn_delete.Enabled = true;
             }
 
-            //Si no hay solo un 0, no se concatena el cero.
-            if(tbx_result.Text != "0")
+            else
             {
-                tbx_result.Text += "0";
+                //Si no hay solo un 0, no se concatena el cero.
+                if (tbx_result.Text != "0")
+                {
+                    tbx_result.Text += "0";
+                }
             }
-            
         }
 
         private void btn_dot_Click(object sender, EventArgs e)
@@ -282,6 +326,8 @@ namespace Calculadora
             {
                 tbx_result.Text = "";
                 label1.Text = "Historial";
+                num1 = 0;
+                num2 = 0;
             }
 
             if (btn_delete.Enabled == false)
@@ -299,6 +345,7 @@ namespace Calculadora
             //Cambia el signo de los valores, negativo/positivo.
             if(tbx_result.Text != "")
             {
+                //Si solo hay un punto no se activa.
                 if(tbx_result.Text != ".")
                 {
                     tbx_result.Text = Convert.ToString(-1 * Convert.ToDouble(tbx_result.Text));
@@ -311,78 +358,84 @@ namespace Calculadora
         {
             if(tbx_result.Text != "0")
             {
-                if(tbx_result.Text[tbx_result.Text.Length - 1] == '.')
+                //Si el digito es un . vuelve habilitar el boton .
+                if (tbx_result.Text[tbx_result.Text.Length - 1] == '.')
                 {
                     btn_dot.Enabled = true;
                 }
+
                 tbx_result.Text = tbx_result.Text.Remove(tbx_result.Text.Length - 1);
             }
 
-            //Si el ultimo digito es vacio pone un 0.
+            //Si el txtbox es vacio pone un 0.
             if(tbx_result.Text == "")
             {
                 tbx_result.Text = "0";
             }
         }
 
+        //Funcion que limpia todo al darle al boton "limpiar".
         private void btn_clean_Click(object sender, EventArgs e)
         {
-            tbx_result.Text = "";
+            tbx_result.Text = "0";
             label1.Text = "Historial";
             btn_dot.Enabled = true;
+            num1 = 0;
+            num2 = 0;
         }
 
         private void btn_suma_Click(object sender, EventArgs e)
         {
-            //Si hay un error, limpia la caja de texto y el historial.
-            if (tbx_result.Text == "ERROR")
-            {
-                tbx_result.Text = "";
-                label1.Text = "Historial";
-            }
-
-            if (btn_delete.Enabled == false)
-            {
-                tbx_result.Text = "";
-                btn_delete.Enabled = true;
-            }
-
-            if (tbx_result.Text != "0")
-            {
-                if(label1.Text != "Historial")
-                {
-                    num2 = Convert.ToDouble(tbx_result.Text);
-                    num1 += num2; 
-                }
-                else
-                {
-                    num1 = Convert.ToDouble(tbx_result.Text);
-                }
-
-                signo = '+';
-                label1.Text =  Convert.ToString(num1) + "+";
-                tbx_result.Text = "0";
-            }
+            signo = '+';
+            num1 = Convert.ToDouble(tbx_result.Text);
+            label1.Text = tbx_result.Text + " + ";
+            tbx_result.Text = "0";
         }
 
         private void btn_resta_Click(object sender, EventArgs e)
         {
-
+            signo = '-';
+            num1 = Convert.ToDouble(tbx_result.Text);
+            label1.Text = tbx_result.Text + " - ";
+            tbx_result.Text = "0";
         }
 
         private void btn_multi_Click(object sender, EventArgs e)
         {
-
+            signo = '*';
+            num1 = Convert.ToDouble(tbx_result.Text);
+            label1.Text = tbx_result.Text + " * ";
+            tbx_result.Text = "0";
         }
 
         private void btn_division_Click(object sender, EventArgs e)
         {
-
+            signo = '/';
+            num1 = Convert.ToDouble(tbx_result.Text);
+            label1.Text = tbx_result.Text + " / ";
+            tbx_result.Text = "0";
         }
 
+        //Funcion que realiza la operacion al darle al boton "=".
         private void btn_total_Click(object sender, EventArgs e)
         {
+            //Si no hay ningun valor en num2, le asigna el valor de textbox.
+            if (num2 == 0)
+            {
+                num2 = Convert.ToDouble(tbx_result.Text);
+                label1.Text += tbx_result.Text + " =";
+                tbx_result.Text = Convert.ToString(operacion());
+                num1 = 0;
+                num2 = 0;
+            }
 
+            //Si hay un error muestra el mensaje y vuelve el error a falso.
+            if (error)
+            {
+                tbx_result.Text = "ERROR";
+                btn_delete.Enabled = false;
+                error = false;
+            }
         }
     }
 }

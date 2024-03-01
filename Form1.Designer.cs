@@ -107,6 +107,8 @@
             // btn_suma
             // 
             this.btn_suma.BackColor = System.Drawing.SystemColors.Desktop;
+            this.btn_suma.FlatAppearance.BorderColor = System.Drawing.Color.Cyan;
+            this.btn_suma.FlatAppearance.BorderSize = 15;
             this.btn_suma.Font = new System.Drawing.Font("Cambria", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_suma.ForeColor = System.Drawing.Color.GreenYellow;
             this.btn_suma.Location = new System.Drawing.Point(244, 286);
@@ -184,9 +186,9 @@
             // 
             // btn_off
             // 
-            this.btn_off.BackColor = System.Drawing.SystemColors.Desktop;
-            this.btn_off.Font = new System.Drawing.Font("Cambria", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_off.ForeColor = System.Drawing.Color.GreenYellow;
+            this.btn_off.BackColor = System.Drawing.Color.Red;
+            this.btn_off.Font = new System.Drawing.Font("Cambria", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_off.ForeColor = System.Drawing.Color.DarkRed;
             this.btn_off.Location = new System.Drawing.Point(10, 107);
             this.btn_off.Name = "btn_off";
             this.btn_off.Size = new System.Drawing.Size(72, 34);
