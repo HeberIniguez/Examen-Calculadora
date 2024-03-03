@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,37 +14,29 @@ namespace Calculadora
     
     public partial class Calculadora : Form
     {
-        //Variables Globales
-        double num1 = 0;
-        double num2 = 0;
-        bool error = false;
-        char signo = 'n';
-
         public Calculadora()
         {
             InitializeComponent();
         }
 
-        private double operacion()
-        {
-            double resultado = 0;
-            
+        //Funcion que permite determinar la operacion a realizar.
+        public double operacion()
+        {   
             switch(signo)
             {
-                case '+': resultado = num1 + num2; break;
-                case '-': resultado = num1 - num2; break;
-                case '*': resultado = num1 * num2; break;
+                case '+': return num1 + num2; 
+                case '-': return num1 - num2;
+                case '*': return num1 * num2;
                 case '/': if(num2 == 0)
                     {
                         label1.Text = "No se puede dividir entre 0";
                         error = true;
-                        break;
+                        return 0;
 
                     }
-                    resultado = num1 / num2; break;
+                    return num1 / num2;
             }
-            signo = 'n';
-            return resultado;
+            return 0;
         }
 
         private void btn_off_Click(object sender, EventArgs e)
@@ -305,17 +298,17 @@ namespace Calculadora
 
             if (btn_delete.Enabled == false)
             {
-                tbx_result.Text = "";
+                tbx_result.Text = "0";
                 btn_delete.Enabled = true;
             }
 
             else
             {
-                //Si no hay solo un 0, no se concatena el cero.
+                //Si hay solo un 0, no se concatena el 0.
                 if (tbx_result.Text != "0")
                 {
                     tbx_result.Text += "0";
-                }
+                }  tbx_result.Text = "0";
             }
         }
 
@@ -337,6 +330,8 @@ namespace Calculadora
             }
 
             tbx_result.Text += ".";
+
+            //Solo se puede tener un punto, por lo cual deshabilita el boton.
             btn_dot.Enabled = false;
         }
 
@@ -380,61 +375,195 @@ namespace Calculadora
             tbx_result.Text = "0";
             label1.Text = "Historial";
             btn_dot.Enabled = true;
+            btn_delete.Enabled = true;
             num1 = 0;
             num2 = 0;
         }
 
-        private void btn_suma_Click(object sender, EventArgs e)
-        {
-            signo = '+';
-            num1 = Convert.ToDouble(tbx_result.Text);
-            label1.Text = tbx_result.Text + " + ";
-            tbx_result.Text = "0";
+         private void btn_suma_Click(object sender, EventArgs e)
+         {
+            if (tbx_result.Text != "0")
+            {
+                if (signo == 'n')
+                {
+                    label1.Text = "";
+                    num1 = Convert.ToDouble(tbx_result.Text);
+                    signo = '+';
+                    label1.Text += tbx_result.Text + signo;
+                }
+                else
+                {
+                    num2 = Convert.ToDouble(tbx_result.Text);
+                    label1.Text += tbx_result.Text + signo;
+                    tbx_result.Text = Convert.ToString(operacion());
+
+                    if (error)
+                    {
+                        num1 = 0;
+                        signo = 'n';
+                        error = false;
+                    }
+                    else
+                    {
+                        num1 = Convert.ToDouble(tbx_result.Text);
+                        signo = '+';
+
+                    }
+                }
+
+                tbx_result.Text = "0";
+                btn_dot.Enabled = true;
+                btn_delete.Enabled = false;
+            }
         }
 
         private void btn_resta_Click(object sender, EventArgs e)
         {
-            signo = '-';
-            num1 = Convert.ToDouble(tbx_result.Text);
-            label1.Text = tbx_result.Text + " - ";
-            tbx_result.Text = "0";
+            if (tbx_result.Text != "0")
+            {
+                if (signo == 'n')
+                {
+                    label1.Text = "";
+                    num1 = Convert.ToDouble(tbx_result.Text);
+                    signo = '-';
+                    label1.Text += tbx_result.Text + signo;
+                }
+                else
+                {
+                    num2 = Convert.ToDouble(tbx_result.Text);
+                    label1.Text += tbx_result.Text + signo;
+                    tbx_result.Text = Convert.ToString(operacion());
+
+                    if (error)
+                    {
+                        num1 = 0;
+                        signo = 'n';
+                        error = false;
+                    }
+                    else
+                    {
+                        num1 = Convert.ToDouble(tbx_result.Text);
+                        signo = '-';
+
+                    }
+                }
+
+                tbx_result.Text = "0";
+                btn_dot.Enabled = true;
+                btn_delete.Enabled = false;
+            }
         }
 
         private void btn_multi_Click(object sender, EventArgs e)
         {
-            signo = '*';
-            num1 = Convert.ToDouble(tbx_result.Text);
-            label1.Text = tbx_result.Text + " * ";
-            tbx_result.Text = "0";
+            if (tbx_result.Text != "0")
+            {
+                if (signo == 'n')
+                {
+                    label1.Text = "";
+                    num1 = Convert.ToDouble(tbx_result.Text);
+                    signo = '*';
+                    label1.Text += tbx_result.Text + signo;
+                }
+                else
+                {
+                    num2 = Convert.ToDouble(tbx_result.Text);
+                    label1.Text += tbx_result.Text + signo;
+                    tbx_result.Text = Convert.ToString(operacion());
+
+                    if (error)
+                    {
+                        num1 = 0;
+                        signo = 'n';
+                        error = false;
+                    }
+                    else
+                    {
+                        num1 = Convert.ToDouble(tbx_result.Text);
+                        signo = '*';
+
+                    }
+                }
+
+                tbx_result.Text = "0";
+                btn_dot.Enabled = true;
+                btn_delete.Enabled = false;
+            }
         }
+
+        /*private void btn_division_Click(object sender, EventArgs e)
+        {
+            //hace una comprobacion para realizar una operacion solo si ya se agrego un valor.
+            if (tbx_result.Text != "0" && signo == 'n')
+            {
+                signo = '/';
+                num1 = Convert.ToDouble(tbx_result.Text);
+                label1.Text = tbx_result.Text + " / ";
+                tbx_result.Text = "0";
+            }
+        }*/
 
         private void btn_division_Click(object sender, EventArgs e)
         {
-            signo = '/';
-            num1 = Convert.ToDouble(tbx_result.Text);
-            label1.Text = tbx_result.Text + " / ";
-            tbx_result.Text = "0";
+            if(tbx_result.Text != "0")
+            {
+                if(signo == 'n')
+                {
+                    label1.Text = "";
+                    num1 = Convert.ToDouble(tbx_result.Text);
+                    signo = '/';
+                    label1.Text += tbx_result.Text + signo;
+                }
+                else
+                {
+                    num2 = Convert.ToDouble(tbx_result.Text);
+                    label1.Text += tbx_result.Text + signo;
+                    tbx_result.Text = Convert.ToString(operacion());
+
+                    if (error)
+                    {
+                        num1 = 0;
+                        signo = 'n';
+                        error = false;
+                    }
+                    else
+                    {
+                        num1 = Convert.ToDouble(tbx_result.Text);
+                        signo = '/';
+
+                    }
+                }
+
+                tbx_result.Text = "0";
+                btn_dot.Enabled = true;
+                btn_delete.Enabled = false;
+            }
         }
 
         //Funcion que realiza la operacion al darle al boton "=".
         private void btn_total_Click(object sender, EventArgs e)
         {
-            //Si no hay ningun valor en num2, le asigna el valor de textbox.
-            if (num2 == 0)
+            if(signo != 'n' && tbx_result.Text != "n")
             {
                 num2 = Convert.ToDouble(tbx_result.Text);
-                label1.Text += tbx_result.Text + " =";
+                label1.Text += tbx_result.Text + " = ";
                 tbx_result.Text = Convert.ToString(operacion());
-                num1 = 0;
-                num2 = 0;
-            }
 
-            //Si hay un error muestra el mensaje y vuelve el error a falso.
-            if (error)
-            {
-                tbx_result.Text = "ERROR";
-                btn_delete.Enabled = false;
-                error = false;
+                if(error)
+                {
+                    tbx_result.Text = "ERROR";
+                    num1 = 0;
+                    error = false;
+                }
+                else
+                {
+                    num1 = Convert.ToDouble(tbx_result.Text);
+                }
+
+                num2 = 0;
+                signo = 'n';
+                btn_dot.Enabled=true;
+                btn_delete.Enabled=false;
             }
         }
     }

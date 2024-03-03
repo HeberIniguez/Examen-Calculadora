@@ -4,6 +4,11 @@
     {
         /// <summary>
         /// Variable del diseñador necesaria.
+        double num1 = 0;
+        double num2 = 0;
+        bool error = false;
+        char signo = 'n';
+
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
